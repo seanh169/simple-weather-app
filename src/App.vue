@@ -4,7 +4,8 @@
   <div id="app">
 
       <b-navbar type="dark" variant="dark"> 
-            <b-navbar-brand href="#">{{appBarTitle}}</b-navbar-brand>
+            <img src="./assets/iconfinder_07_sun_smile_happy_emoticon_weather_smiley_3375693.svg" width="50" height="50" />
+            <b-navbar-brand href="#" style="margin-left: 25px">{{appBarTitle}}</b-navbar-brand>
       </b-navbar>
 
       
@@ -12,13 +13,13 @@
       <b-container id="container">
         <b-form v-on:submit="onSubmit" v-on:reset="onReset" v-if="show">
           <b-row class="mb-3">
-            <b-col md="4" offset-md="4" align-self="center">
+            <b-col md="5" offset-md="4" align-self="center">
               <small>Please enter city name to view weather forecast or press button below to insert longitute/latitude</small>
             </b-col>
           </b-row>
 
           <b-row class="mb-3">
-            <b-col md="4" offset-md="4" align-self="center">
+            <b-col md="5" offset-md="4" align-self="center">
               <b-button variant="primary" v-on:click="changeLocationType">Click here to search by {{showCityType ? "Longitude/Latitude" : "City Name"}}</b-button>
               <small></small>
             </b-col>
@@ -26,7 +27,7 @@
 
 
           <b-row v-if="showCityType" class="mb-3">
-            <b-col md="4" offset-md="4" align-self="center">
+            <b-col md="5" offset-md="4" align-self="center">
             <b-input-group size="md" prepend="City Name">
               <b-form-input type="text" v-model="cityName"></b-form-input>
             </b-input-group>
@@ -35,30 +36,30 @@
 
           <div v-else>
           <b-row class="mb-3">
-            <b-col md="4" offset-md="4" align-self="center">
+            <b-col md="5" offset-md="4" align-self="center">
             <b-input-group size="md" prepend="Longitude">
-              <b-form-input v-model="longitute"></b-form-input>
+              <b-form-input type="number" v-model="longitute"></b-form-input>
             </b-input-group>
             </b-col>
           </b-row>
 
           <b-row class="mb-3">
-            <b-col md="4" offset-md="4" align-self="center">
+            <b-col md="5" offset-md="4" align-self="center">
             <b-input-group size="md" prepend="Latitude">
-              <b-form-input v-model="latitude"></b-form-input>
+              <b-form-input type="number" v-model="latitude"></b-form-input>
             </b-input-group>
             </b-col>
           </b-row>
           </div>
           <b-row class="mb-3">
-          <b-col md="4" offset-md="5" align-self="center">
+          <b-col md="5" offset-md="5" align-self="center">
             <b-button type="submit" variant="success">Search</b-button>
             <b-button type="reset" variant="danger">Reset</b-button>
           </b-col>
           </b-row>
 
           <b-row class="mb-3">
-          <b-col md="4" offset-md="4" align-self="center">
+          <b-col md="5" offset-md="4" align-self="center">
           <b-alert dismissible variant="danger" fade :show="showDismissibleAlert" @dismissed="showDismissibleAlert=false" v-for="(error, index) in errors" :key="index">
             {{error}}
           </b-alert>
@@ -68,7 +69,7 @@
 
         <div v-if="showListOfCities">
         <b-row class="mb-3">
-          <b-col md="4" offset-md="4" align-self="center">
+          <b-col md="5" offset-md="4" align-self="center">
            <b-form-group label="Choose city below">
             <b-form-radio v-model="selectedCity" @change="radioChangeHandler(city.title)" name="city-radios" v-for="city in listOfCities" :key="city.woeid" :value="city.woeid" >{{city.title}}</b-form-radio>
           </b-form-group>
@@ -76,7 +77,7 @@
         </b-row>
 
         <b-row class="mb-3">
-          <b-col md="4" offset-md="4" align-self="center">
+          <b-col md="5" offset-md="4" align-self="center">
             <b-button variant="success" v-on:click="showForeCastHandler">Show 5 Day Forecast!</b-button>
           </b-col>
         </b-row>
@@ -84,7 +85,7 @@
 
         <div v-if="showfiveDayForeCast" >
         <b-row class="mb-3">
-          <b-col md="4" offset-md="4" align-self="center">
+          <b-col md="5" offset-md="4" align-self="center">
             <h6>Five Day Forecast</h6>
             <b-card
               v-for="(day, index) in fiveDayValues"
@@ -92,7 +93,7 @@
               :title="day.date"
               img-top
               tag="article"
-              style="max-width: 20rem;"
+              style="max-width: 25rem;"
               class="mb-2"
             >
               <b-card-text>
@@ -117,7 +118,11 @@
       </b-container>
 
       <b-modal ref="modal-1" id="modal-1" title="Weather App" ok-only ok-title="Cancel">
-        <p class="my-4">Getting data. Please wait...</p>
+
+        <p class="my-4">Searching. Please wait...</p>
+        <div class="d-flex justify-content-center mb-3">
+        <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
+        </div>
       </b-modal>
 
   </div>
@@ -268,6 +273,14 @@ export default {
      
     }, 
     onReset: function(event) {
+      this.showListOfCities = false;
+      this.showfiveDayForeCast = false;
+      this.showDismissibleAlert = false;
+      this.showCityType = true;
+      this.longitute = null;
+      this.latitude = null;
+      this.cityName = null;
+      this.validatedCityName = '';
       
     },
     radioChangeHandler: function(event, other) {
