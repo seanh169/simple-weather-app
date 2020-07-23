@@ -14,7 +14,7 @@
         <b-form v-on:submit="onSubmit" v-on:reset="onReset" v-if="show">
           <b-row class="mb-3">
             <b-col md="5" offset-md="4" align-self="center">
-              <small>Please enter city name to view weather forecast or press button below to insert longitute/latitude</small>
+              <small>Please enter city name or press button below to insert longitute/latitude to find a city's five day forecast.</small>
             </b-col>
           </b-row>
 
@@ -119,7 +119,7 @@
 
       <b-modal ref="modal-1" id="modal-1" title="Weather App" ok-only ok-title="Cancel">
 
-        <p class="my-4">Searching. Please wait...</p>
+        <p class="md-4">Searching. Please wait...</p>
         <div class="d-flex justify-content-center mb-3">
         <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
         </div>
